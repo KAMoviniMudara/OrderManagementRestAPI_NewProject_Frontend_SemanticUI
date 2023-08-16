@@ -4,13 +4,12 @@ export const Login = (props)=>{
         
         <form className="form">
             <lable className="login1" for="login">LOGIN</lable>
-            <br> 
-            </br>
+            <br/>
             <label htmlFor="username">User Name </label>
-            <input type="username" placeholder="abc@123" id="username" name="username"/>
+            <input className="input1" type="username" placeholder="abc@123" id="username" name="username"/>
             <label htmlFor="password">Password </label>
-            <input type="password" placeholder="**********" id="password" name="password"/>
-            <button onClick={() => props.onFormSwitch('register')}>Login</button>
+            <input className="input1" type="password" placeholder="**********" id="password" name="password"/>
+            <button className = "loginbt" onClick={() => props.onFormSwitch('register')}>Login</button>
             
         </form>
         </div>

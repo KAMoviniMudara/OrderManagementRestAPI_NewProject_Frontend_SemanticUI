@@ -14,7 +14,7 @@
 .login , .form{
   background-color: rgb(237, 229, 229);
   width: 400px;
-  height: 300px;
+  height: 320px;
   display: flex;
   flex-direction: column;
   border: 3px solid darkblue;
@@ -35,15 +35,29 @@ label{
  
 }
 
-input{ 
+.input1{ 
   margin: 2em 0;
   border-color: darkblue;
   border-radius: 4px;
-  width: 250px;
-
+  width: 300px;
 }
 
- button{
+.input2{ 
+  border-color: darkblue;
+  border-radius: 4px;
+  width: 150px;
+  align-self: last baseline;
+}
+
+.input3{ 
+  border-color: darkblue;
+  border-radius: 4px;
+  width: 230px;
+  height: 180px;
+  align-self: last baseline;
+}
+
+ .loginbt{
   
   border-radius: 10px;
   color:darkblue;
@@ -60,4 +74,32 @@ input{
 
   
 
+.bt1{
+  
+  border-radius: 10px;
+  color:darkblue;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 15px;
+  padding:2px;
+  border-color: darkblue;
+  background-color: rgb(255, 254, 254);
+  width: 140px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.logoutbt{
+  
+  border-radius: 10px;
+  color:darkblue;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 20px;
+  padding:2px;
+  border-color: darkblue;
+  background-color: rgb(255, 254, 254);
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  
+}
 
