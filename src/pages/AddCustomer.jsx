@@ -5,7 +5,7 @@ import { useState } from "react";
 export const AddCustomer = (props) => {
   const navigate = useNavigate();
 
-  const[customer_id,setCustomerId] = useState("");
+  
   const [customer_name, setCustomerName] = useState("");
   const [customer_address, setCustomerAddress] = useState("");
   const [salary, setSalary] = useState("");
@@ -49,8 +49,8 @@ export const AddCustomer = (props) => {
     setContactNumbers([...contact_numbers, ""]);
   };
 
-  const handleClear = () => {
-    setCustomerId("");
+  const handleClear = (event) => {
+    event.preventDefault();
     setCustomerName("");
     setCustomerAddress("");
     setSalary("");
@@ -91,22 +91,9 @@ export const AddCustomer = (props) => {
   return (
     <div>
       <form className="form" onSubmit={handleSubmit}>
-      <lable className="login1" for="login">ADD CUSTOMER</lable>
+      <lable className="login1" for="login">ADD NEW CUSTOMER</lable>
         <br />
         <table>
-        <tr>
-            <td>
-              <label>Customer ID </label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={customer_id}
-                onChange={(event) => setCustomerId(event.target.value)}
-              />
-            </td>
-            
-          </tr>
           <tr>
             <td>
               <label>Name </label>

@@ -23,6 +23,15 @@ export const AddItem = (props) => {
     return /^\d+$/.test(input);
   };
 
+  const handleClear = (event) => {
+    event.preventDefault();
+    setItemName("");
+    setBalanceQty("");
+    setSupplierPrice("");
+    setSellerPrice("");
+    setMeasureType("");
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -144,7 +153,9 @@ export const AddItem = (props) => {
               </button>
             </td>
             <td>
-              <button className="bt3">Clear</button>
+              <button className="bt3" onClick={handleClear}>
+                Clear
+              </button>
             </td>
             <td>
               <button className="bt3" onClick={() => handleClick("/Main")}>
