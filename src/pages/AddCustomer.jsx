@@ -5,6 +5,7 @@ import { useState } from "react";
 export const AddCustomer = (props) => {
   const navigate = useNavigate();
 
+  const[customer_id,setCustomerId] = useState("");
   const [customer_name, setCustomerName] = useState("");
   const [customer_address, setCustomerAddress] = useState("");
   const [salary, setSalary] = useState("");
@@ -48,6 +49,15 @@ export const AddCustomer = (props) => {
     setContactNumbers([...contact_numbers, ""]);
   };
 
+  const handleClear = () => {
+    setCustomerId("");
+    setCustomerName("");
+    setCustomerAddress("");
+    setSalary("");
+    setContactNumbers([]);
+    setNic("");
+  };
+
   async function handleSubmit(event) {
     event.preventDefault();
     if (contact_numbers.every(number => number.length === 10)) {
@@ -84,6 +94,19 @@ export const AddCustomer = (props) => {
       <lable className="login1" for="login">ADD CUSTOMER</lable>
         <br />
         <table>
+        <tr>
+            <td>
+              <label>Customer ID </label>
+            </td>
+            <td>
+              <input
+                className="input3"
+                value={customer_id}
+                onChange={(event) => setCustomerId(event.target.value)}
+              />
+            </td>
+            
+          </tr>
           <tr>
             <td>
               <label>Name </label>
@@ -166,7 +189,7 @@ export const AddCustomer = (props) => {
               </button>
             </td>
             <td>
-              <button className="bt3">Clear</button>
+              <button className="bt3"  onClick={handleClear}>Clear</button>
             </td>
             <td>
               <button className="bt3" onClick={() => handleClick("/Main")}>
