@@ -26,6 +26,7 @@
   font-size: 80px;
   color: aliceblue;
   background-color: darkblue;
+  align-content: center;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
@@ -60,7 +61,6 @@ label{
   border-radius: 4px;
   width: 200px;
   height: 50px;
-  font-size: 30;
   align-self: last baseline;
 }
 
