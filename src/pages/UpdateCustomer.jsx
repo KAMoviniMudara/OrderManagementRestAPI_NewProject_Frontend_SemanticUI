@@ -5,7 +5,6 @@ import { useState } from "react";
 export const UpdateCustomer = (props) => {
   const navigate = useNavigate();
 
-  const [customer_id, setCustomerId] = useState("");
   const [customer_name, setCustomerName] = useState("");
   const [customer_address, setCustomerAddress] = useState("");
   const [salary, setSalary] = useState("");
@@ -20,6 +19,7 @@ export const UpdateCustomer = (props) => {
       alert("There are only 10 digits for NIC");
     }
   };
+
   const handlePhoneNumberChange = (event, index) => {
     const inputPhoneNumber = event.target.value;
     if (/^[0-9]*$/.test(inputPhoneNumber)) {
@@ -44,17 +44,47 @@ export const UpdateCustomer = (props) => {
     }
   };
 
-
   const handleAddPhoneNumber = () => {
     setContactNumbers([...contact_numbers, ""]);
   };
 
+  const handleClear = (event) => {
+    event.preventDefault();
+    setCustomerName("");
+    setCustomerAddress("");
+    setSalary("");
+    setContactNumbers([]);
+    setNic("");
+  };
+
+  
+  const handleDeactivate = async (event) => {
+    event.preventDefault();
+    if (window.confirm("Are you sure you want to deactivate this customer?")) {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8087/api/v1/customer/deactivate-customer-by-name`,
+          {
+            customerName: customer_name, // Send the customer name to the server
+          }
+        );
+  
+        if (response.data === "Customer Deactivated") {
+          alert("Customer Deactivated Successfully");
+        } else {
+          alert("Customer Deactivation Failed");
+        }
+      } catch (err) {
+        alert("Customer Deactivation Failed");
+      }
+    }
+  };
+  
   async function handleSubmit(event) {
     event.preventDefault();
-    if (contact_numbers.every(number => number.length === 10)) {
+    if (contact_numbers.every((number) => number.length === 10)) {
       try {
-        await axios.post("http://localhost:8087/api/v1/customer/update", {
-          customerID: customer_id,
+        await axios.post("http://localhost:8087/api/v1/customer/update-by-name", {
           customerName: customer_name,
           customerAddress: customer_address,
           salary: salary,
@@ -63,7 +93,6 @@ export const UpdateCustomer = (props) => {
           activeState: true,
         });
         alert("Customer Update Successful");
-        setCustomerId("");
         setCustomerName("");
         setCustomerAddress("");
         setSalary("");
@@ -84,25 +113,15 @@ export const UpdateCustomer = (props) => {
   return (
     <div>
       <form className="form" onSubmit={handleSubmit}>
-      <lable className="login1" for="login">UPDATE & DELETE CUSTOMER</lable>
+        <lable className="login1" htmlFor="login">
+          UPDATE & DELETE CUSTOMER
+        </lable>
         <br />
         <table>
-            <tr>
-                <td>
-                    <label>Customer ID</label>
-                </td>
-                <td>
-                <input
-                className="input3"
-                value={customer_id}
-                onChange={(event) => setCustomerId(event.target.value)}
-              />
-                </td>
-            </tr>
-            <tr className="dot">...............</tr>
+          <tr className="dot">...............</tr>
           <tr>
             <td>
-              <label>Name </label>
+              <label>Name</label>
             </td>
             <td>
               <input
@@ -182,10 +201,10 @@ export const UpdateCustomer = (props) => {
               </button>
             </td>
             <td>
-              <button className="bt3">Clear</button>
+              <button className="bt3" onClick={handleClear}>Clear</button>
             </td>
             <td>
-              <button className="bt3">Delete</button>
+              <button className="bt3" onClick={handleDeactivate}>Delete</button>
             </td>
             <td>
               <button className="bt3" onClick={() => handleClick("/Main")}>
