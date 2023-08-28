@@ -32,6 +32,50 @@ export const UpdateItem = (props) => {
     setMeasureType("");
   };
 
+  const handleDeactivate = async (event) => {
+    event.preventDefault();
+    if (window.confirm("Are you sure you want to deactivate this item?")) {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8087/api/v1/item/deactivate-item-by-name`,
+          {
+            itemName: item_name,
+          }
+        );
+
+        if (response.data === "Item Deactivated") {
+          alert("Item Deactivated Successfully");
+        } else {
+          alert("Item Deactivation Failed");
+        }
+      } catch (err) {
+        alert("Item Deactivation Failed");
+      }
+    }
+  };
+
+  const handleActivate = async (event) => {
+    event.preventDefault();
+    if (window.confirm("Are you sure you want to activate this item?")) {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8087/api/v1/item/activate-item-by-name`,
+          {
+            itemName: item_name,
+          }
+        );
+
+        if (response.data === "Item Activated") {
+          alert("Item Activated Successfully");
+        } else {
+          alert("Item Activation Failed");
+        }
+      } catch (err) {
+        alert("Item Activation Failed");
+      }
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -45,7 +89,7 @@ export const UpdateItem = (props) => {
     }
 
     try {
-      await axios.post("http://localhost:8087/api/v1/item/save", {
+      await axios.post("http://localhost:8087/api/v1/item/update-by-name", {
         itemName: item_name,
         measuringUnitType: measure_type,
         balanceQty: balance_qty,
@@ -53,14 +97,14 @@ export const UpdateItem = (props) => {
         sellerPrice: seller_price,
         activeState: true,
       });
-      alert("Item Added Successful");
+      alert("Item updated Successful");
       setItemName("");
       setBalanceQty("");
       setSupplierPrice("");
       setSellerPrice("");
       setMeasureType("");
     } catch (err) {
-      alert("Item Added Failed");
+      alert("Item updated Failed");
     }
   };
 
@@ -145,17 +189,21 @@ export const UpdateItem = (props) => {
           <tr>
             <td></td>
             <td className="dot">
-              ........................................................................................................................
+                    ..........................................................
+            </td>
+            <td>
+              <button className="bt3" onClick={handleClear}>Clear</button>
             </td>
             <td>
               <button className="bt3" type="submit">
-                Save
+                Update
               </button>
+            </td>           
+            <td>
+              <button className="bt3" onClick={handleDeactivate}>Delete</button>
             </td>
             <td>
-              <button className="bt3" onClick={handleClear}>
-                Clear
-              </button>
+              <button className="bt3" onClick={handleActivate}>Activate</button>
             </td>
             <td>
               <button className="bt3" onClick={() => handleClick("/Main")}>

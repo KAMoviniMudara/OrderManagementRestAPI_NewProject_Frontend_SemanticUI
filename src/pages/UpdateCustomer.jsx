@@ -79,6 +79,28 @@ export const UpdateCustomer = (props) => {
       }
     }
   };
+
+  const handleActivate = async (event) => {
+    event.preventDefault();
+    if (window.confirm("Are you sure you want to activate this customer?")) {
+      try {
+        const response = await axios.patch(
+          `http://localhost:8087/api/v1/customer/activate-customer-by-name`,
+          {
+            customerName: customer_name, // Send the customer name to the server
+          }
+        );
+  
+        if (response.data === "Customer Activated") {
+          alert("Customer Activated Successfully");
+        } else {
+          alert("Customer Activation Failed");
+        }
+      } catch (err) {
+        alert("Customer Activation Failed");
+      }
+    }
+  };
   
   async function handleSubmit(event) {
     event.preventDefault();
@@ -193,18 +215,21 @@ export const UpdateCustomer = (props) => {
           <tr>
             <td></td>
             <td className="dot">
-              ........................................................................................................................
-            </td>
-            <td>
-              <button className="bt3" type="submit">
-                Update
-              </button>
+              ...........................................................
             </td>
             <td>
               <button className="bt3" onClick={handleClear}>Clear</button>
             </td>
             <td>
+              <button className="bt3" type="submit">
+                Update
+              </button>
+            </td>           
+            <td>
               <button className="bt3" onClick={handleDeactivate}>Delete</button>
+            </td>
+            <td>
+              <button className="bt3" onClick={handleActivate}>Activate</button>
             </td>
             <td>
               <button className="bt3" onClick={() => handleClick("/Main")}>
