@@ -191,6 +191,7 @@ export const AddCustomer = (props) => {
             <Button color="red" onClick={handleClear}>
               Clear
             </Button>
+            <Button.Or />
           </Button.Group>
           <Button color="teal" onClick={() => handleClick("/Main")}>
             Back

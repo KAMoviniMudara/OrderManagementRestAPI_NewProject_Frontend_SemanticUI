@@ -1,13 +1,23 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  Header,
+  Table,
+  Label,
+  Grid,
+  Select,
+} from "semantic-ui-react";
 
 const measuringUnitTypes = [
   "KILO_GRAM",
   "LITER",
   "GRAM",
   "MILI_GRAM",
-  "NUMBER"
+  "NUMBER",
 ];
 
 export const AddItem = (props) => {
@@ -53,7 +63,7 @@ export const AddItem = (props) => {
         sellerPrice: seller_price,
         activeState: true,
       });
-      alert("Item Added Successful");
+      alert("Item Added Successfully");
       setItemName("");
       setBalanceQty("");
       setSupplierPrice("");
@@ -69,102 +79,101 @@ export const AddItem = (props) => {
   };
 
   return (
-    <div>
-      <form className="form" onSubmit={handleSubmit}>
-      <lable className="login1" for="login">ADD NEW ITEM</lable>
-        <br />
-        <table>
-          <tr>
-            <td>
-              <label> Name </label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={item_name}
-                onChange={(event) => setItemName(event.target.value)}
-              />
-            </td>
-            <td>
-              <label> Measuring Unit </label>
-            </td>
-            <td>
-              <select
-                className="dropdown"
-                value={measure_type}
-                onChange={(event) => setMeasureType(event.target.value)}
-              >
-                <option value="">Select Measuring Unit</option>
-                {measuringUnitTypes.map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Balance Quantity</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={balance_qty}
-                onChange={(event) => setBalanceQty(event.target.value)}
-              />
-            </td>
-            <td>
-              <label>Supplier price</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={supplier_price}
-                onChange={(event) => setSupplierPrice(event.target.value)}
-              />
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Seller Price</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={seller_price}
-                onChange={(event) => setSellerPrice(event.target.value)}
-              />
-            </td>
-          </tr>
-        </table>
-        <br />
-        <table>
-          <tr>
-            <td></td>
-            <td className="dot">
-              ........................................................................................................................
-            </td>
-            <td>
-              <button className="bt3" type="submit">
-                Save
-              </button>
-            </td>
-            <td>
-              <button className="bt3" onClick={handleClear}>
-                Clear
-              </button>
-            </td>
-            <td>
-              <button className="bt3" onClick={() => handleClick("/Main")}>
-                Back
-              </button>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
+    <Grid
+      textAlign="center"
+      style={{ height: "100vh", fontSize: "50px" }}
+      verticalAlign="middle"
+    >
+      <Grid.Column style={{ maxWidth: "1520px" }}>
+        <Form className="form" onSubmit={handleSubmit}>
+          <Header as="h1" color="teal" textAlign="center">
+            ADD NEW ITEM
+          </Header>
+          <Table celled>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell width={2}>
+                  <Label>Name</Label>
+                </Table.Cell>
+                <Table.Cell width={6}>
+                  <Input
+                    fluid
+                    value={item_name}
+                    onChange={(event) => setItemName(event.target.value)}
+                    style={{ fontSize: "20px" }} // Adjust the font size
+                  />
+                </Table.Cell>
+                <Table.Cell width={2}>
+                  <Label>Measuring Unit</Label>
+                </Table.Cell>
+                <Table.Cell width={6}>
+                  <Select
+                    fluid
+                    options={measuringUnitTypes.map((unit) => ({
+                      key: unit,
+                      text: unit,
+                      value: unit,
+                    }))}
+                    value={measure_type}
+                    onChange={(event, { value }) => setMeasureType(value)}
+                    style={{ fontSize: "20px" }} // Adjust the font size
+                  />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Label>Balance Quantity</Label>
+                </Table.Cell>
+                <Table.Cell>
+                  <Input
+                    fluid
+                    value={balance_qty}
+                    onChange={(event) => setBalanceQty(event.target.value)}
+                    style={{ fontSize: "20px" }} // Adjust the font size
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <Label>Supplier Price</Label>
+                </Table.Cell>
+                <Table.Cell>
+                  <Input
+                    fluid
+                    value={supplier_price}
+                    onChange={(event) => setSupplierPrice(event.target.value)}
+                    style={{ fontSize: "20px" }} // Adjust the font size
+                  />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Label>Seller Price</Label>
+                </Table.Cell>
+                <Table.Cell>
+                  <Input
+                    fluid
+                    value={seller_price}
+                    onChange={(event) => setSellerPrice(event.target.value)}
+                    style={{ fontSize: "20px" }} // Adjust the font size
+                  />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+          <Button.Group>
+            <Button type="submit" color="teal">
+              Save
+            </Button>
+            <Button.Or />
+            <Button color="red" onClick={handleClear}>
+              Clear
+            </Button>
+            <Button.Or />
+            <Button color="teal" onClick={() => handleClick("/Main")}>
+              Back
+            </Button>
+          </Button.Group>
+        </Form>
+      </Grid.Column>
+    </Grid>
   );
 };
