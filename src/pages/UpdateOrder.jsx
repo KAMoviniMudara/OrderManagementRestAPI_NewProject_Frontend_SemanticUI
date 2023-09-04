@@ -61,7 +61,7 @@ export const UpdateOrder = (props) => {
   return (
     <div>
       <form className="form">
-      <lable className="login1" for="login">UPDATE ORDER</lable>
+      <lable className="login1" for="login">Update Order</lable>
         <br />
         <table>
           <tr>
