@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { Input, Button, Table, Header, Grid } from "semantic-ui-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Header, Table, Input, Button, Segment, Grid, Form } from "semantic-ui-react";
 
 export const UpdateCustomer = (props) => {
   const navigate = useNavigate();
@@ -12,41 +12,8 @@ export const UpdateCustomer = (props) => {
   const [contact_numbers, setContactNumbers] = useState([]);
   const [nic, setNic] = useState("");
 
-  const handleNicChange = (event) => {
-    const inputNic = event.target.value;
-    if (inputNic.length <= 10) {
-      setNic(inputNic);
-    } else {
-      alert("There are only 10 digits for NIC");
-    }
-  };
-
-  const handlePhoneNumberChange = (event, index) => {
-    const inputPhoneNumber = event.target.value;
-    if (/^[0-9]*$/.test(inputPhoneNumber)) {
-      if (inputPhoneNumber.length <= 10) {
-        const newContactNumbers = [...contact_numbers];
-        newContactNumbers[index] = inputPhoneNumber;
-        setContactNumbers(newContactNumbers);
-      } else {
-        alert("There are only 10 digits for phone number");
-      }
-    } else {
-      alert("Please enter numbers only for phone number");
-    }
-  };
-
-  const handleSalaryChange = (event) => {
-    const inputSalary = event.target.value;
-    if (/^[0-9]*$/.test(inputSalary)) {
-      setSalary(inputSalary);
-    } else {
-      alert("Please enter numbers only for salary");
-    }
-  };
-
-  const handleAddPhoneNumber = () => {
-    setContactNumbers([...contact_numbers, ""]);
+  const validateNumberInput = (input) => {
+    return /^\d+$/.test(input);
   };
 
   const handleClear = (event) => {
@@ -65,7 +32,7 @@ export const UpdateCustomer = (props) => {
         const response = await axios.patch(
           `http://localhost:8087/api/v1/customer/deactivate-customer-by-name`,
           {
-            customerName: customer_name, // Send the customer name to the server
+            customerName: customer_name,
           }
         );
 
@@ -87,7 +54,7 @@ export const UpdateCustomer = (props) => {
         const response = await axios.patch(
           `http://localhost:8087/api/v1/customer/activate-customer-by-name`,
           {
-            customerName: customer_name, 
+            customerName: customer_name,
           }
         );
 
@@ -102,137 +69,163 @@ export const UpdateCustomer = (props) => {
     }
   };
 
-  async function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (contact_numbers.every((number) => number.length === 10)) {
-      try {
-        await axios.post("http://localhost:8087/api/v1/customer/update-by-name", {
-          customerName: customer_name,
-          customerAddress: customer_address,
-          salary: salary,
-          contactNumbers: contact_numbers,
-          nic: nic,
-          activeState: true,
-        });
-        alert("Customer Update Successful");
-        setCustomerName("");
-        setCustomerAddress("");
-        setSalary("");
-        setContactNumbers([]);
-        setNic("");
-      } catch (err) {
-        alert("Customer Update Failed");
+
+    if (!validateNumberInput(salary)) {
+      alert("Please enter a valid numeric value for salary.");
+      return;
+    }
+
+    try {
+      await axios.post("http://localhost:8087/api/v1/customer/update-by-name", {
+        customerName: customer_name,
+        customerAddress: customer_address,
+        salary: salary,
+        contactNumbers: contact_numbers,
+        nic: nic,
+        activeState: true,
+      });
+      alert("Customer Update Successful");
+      setCustomerName("");
+      setCustomerAddress("");
+      setSalary("");
+      setContactNumbers([]);
+      setNic("");
+    } catch (err) {
+      alert("Customer Update Failed");
+    }
+  };
+
+  const handleAddPhoneNumber = () => {
+    setContactNumbers([...contact_numbers, ""]);
+  };
+
+  const handlePhoneNumberChange = (event, index) => {
+    const inputPhoneNumber = event.target.value;
+    if (/^[0-9]*$/.test(inputPhoneNumber)) {
+      if (inputPhoneNumber.length <= 10) {
+        const newContactNumbers = [...contact_numbers];
+        newContactNumbers[index] = inputPhoneNumber;
+        setContactNumbers(newContactNumbers);
+      } else {
+        alert("There are only 10 digits for phone number");
       }
     } else {
-      alert("Please enter exactly 10 digits for all phone numbers");
+      alert("Please enter numbers only for phone number");
     }
-  }
+  };
 
   const handleClick = (route) => {
     navigate(route);
   };
 
   return (
-    <div className="customerdetails">
+    <div>
       <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 450 }}>
-          
-          <Header as="h2" className="login1" color= "teal">
+          <Header as="h2" className="login1" color="teal">
             UPDATE & DELETE CUSTOMER
           </Header>
-          <form className="form" onSubmit={handleSubmit}>
-            <Table celled className="table1">
-              
-              <Table.Row>
-                <Table.Cell>
-                  <label>Name</label>
-                </Table.Cell>
-                <Table.Cell>
-                  <input
-                    className="input3"
-                    value={customer_name}
-                    onChange={(event) => setCustomerName(event.target.value)}
-                  />
-                </Table.Cell>
-                <Table.Cell>
-                  <label>Address</label>
-                </Table.Cell>
-                <Table.Cell>
-                  <input
-                    className="input3"
-                    value={customer_address}
-                    onChange={(event) => setCustomerAddress(event.target.value)}
-                  />
-                </Table.Cell>
-              </Table.Row>
-              
-              <Table.Row>
-                <Table.Cell>
-                  <label>NIC</label>
-                </Table.Cell>
-                <Table.Cell>
-                  <input className="input3" value={nic} onChange={handleNicChange} />
-                </Table.Cell>
-                <Table.Cell>
-                  <label>Salary</label>
-                </Table.Cell>
-                <Table.Cell>
-                  <input className="input3" value={salary} onChange={handleSalaryChange} />
-                </Table.Cell>
-              </Table.Row>
-             
-              <Table.Row>
-                <Table.Cell>
-                  <label>Contact Numbers</label>
-                </Table.Cell>
-                <Table.Cell colSpan="3">
-                  {contact_numbers.map((number, index) => (
-                    <input
-                      key={index}
-                      className="input3"
-                      value={number}
-                      onChange={(event) => handlePhoneNumberChange(event, index)}
-                    />
-                  ))}
-                  <Button type="button" onClick={handleAddPhoneNumber}>
-                    Add Contact Number
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            </Table>
-            <br />
-            <Table unstackable>
-              <Table.Row>
-                <Table.Cell></Table.Cell>
-              
-                <Table.Cell>
-                  <Button color="red" onClick={handleClear}>
-                    Clear
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button color="teal" type="submit">
-                    Update
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button color="orange" onClick={handleDeactivate}>
-                    Delete
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button color="green" onClick={handleActivate}>
-                    Activate
-                  </Button>
-                </Table.Cell>
-                <Table.Cell>
-                  <Button color="blue" onClick={() => handleClick("/Main")}>
-                    Back
-                  </Button>
-                </Table.Cell>
-              </Table.Row>
-            </Table>
-          </form>
+          <Form className="form" onSubmit={handleSubmit}>
+            <Segment>
+              <Table basic="very" celled>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Name</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={customer_name}
+                        onChange={(event) => setCustomerName(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Address</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={customer_address}
+                        onChange={(event) => setCustomerAddress(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Salary</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={salary}
+                        onChange={(event) => setSalary(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Contact Numbers</label>
+                    </Table.Cell>
+                    <Table.Cell colSpan={3}>
+                      {contact_numbers.map((number, index) => (
+                        <Input
+                          key={index}
+                          className="input3"
+                          value={number}
+                          onChange={(event) => handlePhoneNumberChange(event, index)}
+                        />
+                      ))}
+                      <Button type="button" onClick={handleAddPhoneNumber}>
+                        Add Contact Number
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>NIC</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={nic}
+                        onChange={(event) => setNic(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Segment>
+            <Table.Cell>
+              <Button color="red" onClick={handleClear}>
+                Clear
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="teal" type="submit">
+                Update
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="orange" onClick={handleDeactivate}>
+                Delete
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="green" onClick={handleActivate}>
+                Activate
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="blue" onClick={() => handleClick("/Main")}>
+                Back
+              </Button>
+            </Table.Cell>
+          </Form>
         </Grid.Column>
       </Grid>
     </div>

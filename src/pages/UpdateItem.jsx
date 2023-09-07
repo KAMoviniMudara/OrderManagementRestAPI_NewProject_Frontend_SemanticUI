@@ -1,13 +1,14 @@
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Header, Table, Input, Button, Segment, Grid, Form, Dropdown } from "semantic-ui-react"; // Add missing imports
 
 const measuringUnitTypes = [
-  "KILO_GRAM",
-  "LITER",
-  "GRAM",
-  "MILI_GRAM",
-  "NUMBER"
+  { key: "KILO_GRAM", text: "KILO_GRAM", value: "KILO_GRAM" },
+  { key: "LITER", text: "LITER", value: "LITER" },
+  { key: "GRAM", text: "GRAM", value: "GRAM" },
+  { key: "MILI_GRAM", text: "MILI_GRAM", value: "MILI_GRAM" },
+  { key: "NUMBER", text: "NUMBER", value: "NUMBER" },
 ];
 
 export const UpdateItem = (props) => {
@@ -97,7 +98,7 @@ export const UpdateItem = (props) => {
         sellerPrice: seller_price,
         activeState: true,
       });
-      alert("Item updated Successful");
+      alert("Item updated Successfully");
       setItemName("");
       setBalanceQty("");
       setSupplierPrice("");
@@ -114,105 +115,111 @@ export const UpdateItem = (props) => {
 
   return (
     <div>
-      <form className="form" onSubmit={handleSubmit}>
-      <lable className="login1" for="login">UPDATE & DELETE ITEM</lable>
-        <br />
-        <table>
-          <tr>
-            <td>
-              <label> Name </label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={item_name}
-                onChange={(event) => setItemName(event.target.value)}
-              />
-            </td>
-            <td>
-              <label> Measuring Unit </label>
-            </td>
-            <td>
-              <select
-                className="dropdown"
-                value={measure_type}
-                onChange={(event) => setMeasureType(event.target.value)}
-              >
-                <option value="">Select Measuring Unit</option>
-                {measuringUnitTypes.map((unit) => (
-                  <option key={unit} value={unit}>
-                    {unit}
-                  </option>
-                ))}
-              </select>
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Balance Quantity</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={balance_qty}
-                onChange={(event) => setBalanceQty(event.target.value)}
-              />
-            </td>
-            <td>
-              <label>Supplier price</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={supplier_price}
-                onChange={(event) => setSupplierPrice(event.target.value)}
-              />
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Seller Price</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={seller_price}
-                onChange={(event) => setSellerPrice(event.target.value)}
-              />
-            </td>
-          </tr>
-        </table>
-        <br />
-        <table>
-          <tr>
-            <td></td>
-            <td className="dot">
-                    ..........................................................
-            </td>
-            <td>
-              <button className="bt3" onClick={handleClear}>Clear</button>
-            </td>
-            <td>
-              <button className="bt3" type="submit">
+      <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" className="login1" color="teal">
+            UPDATE & DELETE ITEM
+          </Header>
+          <Form className="form" onSubmit={handleSubmit}>
+            <Segment>
+              <Table basic="very" celled>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Name</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={item_name}
+                        onChange={(event) => setItemName(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Measuring Unit</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        className="dropdown"
+                        selection
+                        value={measure_type}
+                        options={measuringUnitTypes}
+                        onChange={(event, data) => setMeasureType(data.value)}
+                        placeholder="Select Measuring Unit"
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Balance Quantity</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={balance_qty}
+                        onChange={(event) => setBalanceQty(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Supplier Price</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={supplier_price}
+                        onChange={(event) => setSupplierPrice(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Seller Price</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={seller_price}
+                        onChange={(event) => setSellerPrice(event.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Segment>
+
+            <Table.Cell>
+              <Button color="red" onClick={handleClear}>
+                Clear
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="teal" type="submit">
                 Update
-              </button>
-            </td>           
-            <td>
-              <button className="bt3" onClick={handleDeactivate}>Delete</button>
-            </td>
-            <td>
-              <button className="bt3" onClick={handleActivate}>Activate</button>
-            </td>
-            <td>
-              <button className="bt3" onClick={() => handleClick("/Main")}>
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="orange" onClick={handleDeactivate}>
+                Delete
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="green" onClick={handleActivate}>
+                Activate
+              </Button>
+            </Table.Cell>
+            <Table.Cell>
+              <Button color="blue" onClick={() => handleClick("/Main")}>
                 Back
-              </button>
-            </td>
-          </tr>
-        </table>
-      </form>
+              </Button>
+            </Table.Cell>
+            
+          </Form>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 };
