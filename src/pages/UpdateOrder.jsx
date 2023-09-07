@@ -1,6 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  Header,
+  Table,
+  Input,
+  Button,
+  Segment,
+  Grid,
+  Form,
+} from "semantic-ui-react";
 
 export const UpdateOrder = (props) => {
   const navigate = useNavigate();
@@ -8,8 +17,8 @@ export const UpdateOrder = (props) => {
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [itemName, setItemName] = useState("");
-  const [items,setItems] = useState("");
-  const [orders,setOrders] = useState("");
+  const [items, setItems] = useState("");
+  const [orders, setOrders] = useState("");
   const [quantity, setQuantity] = useState("");
   const [total, setTotal] = useState("");
 
@@ -17,34 +26,33 @@ export const UpdateOrder = (props) => {
     navigate("/Main");
   };
 
+  const handleSave = (event) => {
+    event.preventDefault();
 
-    const handleSave = (event) => {
-        event.preventDefault();
-      
-        const orderData = {
-          customers: customers,
-          date: date,
-          orderDetails: [
-            {
-              amount: amount,
-              itemName: itemName,
-              items: items,
-              orders: orders,
-              qty: quantity,
-            },
-          ],
-          total: total,
-        };
-      
-        axios
-          .post("http://localhost:8087/api/v1/order/save", orderData)
-          .then((response) => {
-            alert("Order saved successfully");
-            handleClear(); // Clear the form fields after successful save
-          })
-          .catch((error) => {
-            alert("Failed to save order");
-          });
+    const orderData = {
+      customers: customers,
+      date: date,
+      orderDetails: [
+        {
+          amount: amount,
+          itemName: itemName,
+          items: items,
+          orders: orders,
+          qty: quantity,
+        },
+      ],
+      total: total,
+    };
+
+    axios
+      .post("http://localhost:8087/api/v1/order/save", orderData)
+      .then((response) => {
+        alert("Order saved successfully");
+        handleClear(); // Clear the form fields after a successful save
+      })
+      .catch((error) => {
+        alert("Failed to save the order");
+      });
   };
 
   const handleClear = () => {
@@ -60,128 +68,126 @@ export const UpdateOrder = (props) => {
 
   return (
     <div>
-      <form className="form">
-      <lable className="login1" for="login">Update Order</lable>
-        <br />
-        <table>
-          <tr>
-            <td>
-              <label>Date</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-            </td>
-            <td>
-              <label> Customers </label>
-            </td>
-            <input
-                className="input3"
-                value={customers}
-                onChange={(e) => setCustomers(e.target.value)}
-              />
-           
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Amount</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-              />
-            </td>
-            <td>
-              <label>Quantity</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>ItemName</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={itemName}
-                onChange={(e) => setItemName(e.target.value)}
-              />
-            </td>
-            <td>
-              <label>Items</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={items}
-                onChange={(e) => setItems(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Orders</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={orders}
-                onChange={(e) => setOrders(e.target.value)}
-              />
-            </td>
-            <td>
-              <label>Total</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={total}
-                onChange={(e) => setTotal(e.target.value)}
-              />
-            </td>
-          </tr>
-        </table>
-        <br />
-        <table>
-          <tr>
-            <td></td>
-            <td className="dot">
-              ..........................................................
-            </td>
-            <td>
-              <button className="bt3" onClick={handleSave}>
-                Update
-              </button>
-            </td>
-            <td>
-              <button className="bt3" onClick={handleClear}>
-                Clear
-              </button>
-            </td>
-            <td>
-              <button className="bt3" onClick={navigateToMain}>
-                Back
-              </button>
-            </td>
-          </tr>
-        </table>
-      </form>
+      <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Header as="h2" className="login1" color="teal">
+            UPDATE ORDER
+          </Header>
+          <Form className="form">
+            <Segment>
+              <Table basic="very" celled>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Date</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <label>Customers</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={customers}
+                        onChange={(e) => setCustomers(e.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Amount</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <label>Quantity</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Item Name</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={itemName}
+                        onChange={(e) => setItemName(e.target.value)}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <label>Items</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={items}
+                        onChange={(e) => setItems(e.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>Orders</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={orders}
+                        onChange={(e) => setOrders(e.target.value)}
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <label>Total</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        className="input3"
+                        value={total}
+                        onChange={(e) => setTotal(e.target.value)}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Segment>
+            <Table.Row>
+              <Table.Cell>
+                <Button color="teal" onClick={handleSave}>
+                  Update
+                </Button>
+              </Table.Cell>
+              <Table.Cell>
+                <Button color="red" onClick={handleClear}>
+                  Clear
+                </Button>
+              </Table.Cell>
+              <Table.Cell>
+                <Button color="blue" onClick={navigateToMain}>
+                  Back
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          </Form>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 };
-
-
