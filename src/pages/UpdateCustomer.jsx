@@ -1,6 +1,7 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Input, Button, Table, Header, Grid } from "semantic-ui-react";
 import { useState } from "react";
+import axios from "axios";
 
 export const UpdateCustomer = (props) => {
   const navigate = useNavigate();
@@ -57,7 +58,6 @@ export const UpdateCustomer = (props) => {
     setNic("");
   };
 
-  
   const handleDeactivate = async (event) => {
     event.preventDefault();
     if (window.confirm("Are you sure you want to deactivate this customer?")) {
@@ -68,7 +68,7 @@ export const UpdateCustomer = (props) => {
             customerName: customer_name, // Send the customer name to the server
           }
         );
-  
+
         if (response.data === "Customer Deactivated") {
           alert("Customer Deactivated Successfully");
         } else {
@@ -87,10 +87,10 @@ export const UpdateCustomer = (props) => {
         const response = await axios.patch(
           `http://localhost:8087/api/v1/customer/activate-customer-by-name`,
           {
-            customerName: customer_name, // Send the customer name to the server
+            customerName: customer_name, 
           }
         );
-  
+
         if (response.data === "Customer Activated") {
           alert("Customer Activated Successfully");
         } else {
@@ -101,7 +101,7 @@ export const UpdateCustomer = (props) => {
       }
     }
   };
-  
+
   async function handleSubmit(event) {
     event.preventDefault();
     if (contact_numbers.every((number) => number.length === 10)) {
@@ -133,112 +133,108 @@ export const UpdateCustomer = (props) => {
   };
 
   return (
-    <div>
-      <form className="form" onSubmit={handleSubmit}>
-        <lable className="login1" htmlFor="login">
-          UPDATE & DELETE CUSTOMER
-        </lable>
-        <br />
-        <table>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label>Name</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={customer_name}
-                onChange={(event) => setCustomerName(event.target.value)}
-              />
-            </td>
-            <td>
-              <label>Address</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={customer_address}
-                onChange={(event) => setCustomerAddress(event.target.value)}
-              />
-            </td>
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label> NIC </label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={nic}
-                onChange={handleNicChange}
-              />
-            </td>
-            <td>
-              <label>Salary</label>
-            </td>
-            <td>
-              <input
-                className="input3"
-                value={salary}
-                onChange={handleSalaryChange}
-              />
-            </td>
-           
-          </tr>
-          <tr className="dot">...............</tr>
-          <tr>
-            <td>
-              <label> Contact Numbers </label>
-            </td>
-            <td colSpan="3">
-              {contact_numbers.map((number, index) => (
-                <input
-                  key={index}
-                  className="input3"
-                  value={number}
-                  onChange={(event) => handlePhoneNumberChange(event, index)}
-                />
-              ))}
-              <button type="button" onClick={handleAddPhoneNumber}>
-                Add Contact Number
-              </button>
-            </td>
-          </tr>
-          <tr>
-           
-          </tr>
-        </table>
-        <br />
-        <table>
-          <tr>
-            <td></td>
-            <td className="dot">
-              ...........................................................
-            </td>
-            <td>
-              <button className="bt3" onClick={handleClear}>Clear</button>
-            </td>
-            <td>
-              <button className="bt3" type="submit">
-                Update
-              </button>
-            </td>           
-            <td>
-              <button className="bt3" onClick={handleDeactivate}>Delete</button>
-            </td>
-            <td>
-              <button className="bt3" onClick={handleActivate}>Activate</button>
-            </td>
-            <td>
-              <button className="bt3" onClick={() => handleClick("/Main")}>
-                Back
-              </button>
-            </td>
-          </tr>
-        </table>
-      </form>
+    <div className="customerdetails">
+      <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 450 }}>
+          
+          <Header as="h2" className="login1" color= "teal">
+            UPDATE & DELETE CUSTOMER
+          </Header>
+          <form className="form" onSubmit={handleSubmit}>
+            <Table celled className="table1">
+              
+              <Table.Row>
+                <Table.Cell>
+                  <label>Name</label>
+                </Table.Cell>
+                <Table.Cell>
+                  <input
+                    className="input3"
+                    value={customer_name}
+                    onChange={(event) => setCustomerName(event.target.value)}
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <label>Address</label>
+                </Table.Cell>
+                <Table.Cell>
+                  <input
+                    className="input3"
+                    value={customer_address}
+                    onChange={(event) => setCustomerAddress(event.target.value)}
+                  />
+                </Table.Cell>
+              </Table.Row>
+              
+              <Table.Row>
+                <Table.Cell>
+                  <label>NIC</label>
+                </Table.Cell>
+                <Table.Cell>
+                  <input className="input3" value={nic} onChange={handleNicChange} />
+                </Table.Cell>
+                <Table.Cell>
+                  <label>Salary</label>
+                </Table.Cell>
+                <Table.Cell>
+                  <input className="input3" value={salary} onChange={handleSalaryChange} />
+                </Table.Cell>
+              </Table.Row>
+             
+              <Table.Row>
+                <Table.Cell>
+                  <label>Contact Numbers</label>
+                </Table.Cell>
+                <Table.Cell colSpan="3">
+                  {contact_numbers.map((number, index) => (
+                    <input
+                      key={index}
+                      className="input3"
+                      value={number}
+                      onChange={(event) => handlePhoneNumberChange(event, index)}
+                    />
+                  ))}
+                  <Button type="button" onClick={handleAddPhoneNumber}>
+                    Add Contact Number
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            </Table>
+            <br />
+            <Table unstackable>
+              <Table.Row>
+                <Table.Cell></Table.Cell>
+              
+                <Table.Cell>
+                  <Button color="red" onClick={handleClear}>
+                    Clear
+                  </Button>
+                </Table.Cell>
+                <Table.Cell>
+                  <Button color="teal" type="submit">
+                    Update
+                  </Button>
+                </Table.Cell>
+                <Table.Cell>
+                  <Button color="orange" onClick={handleDeactivate}>
+                    Delete
+                  </Button>
+                </Table.Cell>
+                <Table.Cell>
+                  <Button color="green" onClick={handleActivate}>
+                    Activate
+                  </Button>
+                </Table.Cell>
+                <Table.Cell>
+                  <Button color="blue" onClick={() => handleClick("/Main")}>
+                    Back
+                  </Button>
+                </Table.Cell>
+              </Table.Row>
+            </Table>
+          </form>
+        </Grid.Column>
+      </Grid>
     </div>
   );
 };

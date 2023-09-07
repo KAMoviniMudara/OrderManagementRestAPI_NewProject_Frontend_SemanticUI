@@ -119,7 +119,7 @@ export const AddCustomer = (props) => {
                     fluid
                     value={customer_name}
                     onChange={(event) => setCustomerName(event.target.value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
+                    style={{ fontSize: "20px" }} 
                   />
                 </Table.Cell>
                 <Table.Cell width={2}>
@@ -132,7 +132,7 @@ export const AddCustomer = (props) => {
                     onChange={(event) =>
                       setCustomerAddress(event.target.value)
                     }
-                    style={{ fontSize: "20px" }} // Adjust the font size
+                    style={{ fontSize: "20px" }} 
                   />
                 </Table.Cell>
               </Table.Row>
@@ -145,7 +145,7 @@ export const AddCustomer = (props) => {
                     fluid
                     value={nic}
                     onChange={handleNicChange}
-                    style={{ fontSize: "20px" }} // Adjust the font size
+                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -156,7 +156,7 @@ export const AddCustomer = (props) => {
                     fluid
                     value={salary}
                     onChange={handleSalaryChange}
-                    style={{ fontSize: "20px" }} // Adjust the font size
+                    style={{ fontSize: "20px" }} 
                   />
                 </Table.Cell>
               </Table.Row>
@@ -173,7 +173,7 @@ export const AddCustomer = (props) => {
                       onChange={(event) =>
                         handlePhoneNumberChange(event, index)
                       }
-                      style={{ fontSize: "20px" }} // Adjust the font size
+                      style={{ fontSize: "20px" }} 
                     />
                   ))}
                   <Button type="button" onClick={handleAddPhoneNumber}>
@@ -191,7 +191,7 @@ export const AddCustomer = (props) => {
             <Button color="red" onClick={handleClear}>
               Clear
             </Button>
-            <Button.Or />
+            
           </Button.Group>
           <Button color="teal" onClick={() => handleClick("/Main")}>
             Back
