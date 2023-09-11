@@ -55,28 +55,6 @@ export const UpdateItem = (props) => {
     }
   };
 
-  const handleActivate = async (event) => {
-    event.preventDefault();
-    if (window.confirm("Are you sure you want to activate this item?")) {
-      try {
-        const response = await axios.patch(
-          `http://localhost:8087/api/v1/item/activate-item-by-name`,
-          {
-            itemName: item_name,
-          }
-        );
-
-        if (response.data === "Item Activated") {
-          alert("Item Activated Successfully");
-        } else {
-          alert("Item Activation Failed");
-        }
-      } catch (err) {
-        alert("Item Activation Failed");
-      }
-    }
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -204,11 +182,6 @@ export const UpdateItem = (props) => {
             <Table.Cell>
               <Button color="orange" onClick={handleDeactivate}>
                 Delete
-              </Button>
-            </Table.Cell>
-            <Table.Cell>
-              <Button color="green" onClick={handleActivate}>
-                Activate
               </Button>
             </Table.Cell>
             <Table.Cell>
