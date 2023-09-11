@@ -1,18 +1,20 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
   Button,
   Form,
-  Input,
   Header,
-  Table,
+  Input,
   Label,
+  Table,
   Grid,
+  Modal,
 } from "semantic-ui-react";
 
 export const AddOrder = (props) => {
   const navigate = useNavigate();
+
   const [customers, setCustomers] = useState("");
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
@@ -21,9 +23,14 @@ export const AddOrder = (props) => {
   const [orders, setOrders] = useState("");
   const [quantity, setQuantity] = useState("");
   const [total, setTotal] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  const navigateToMain = () => {
-    navigate("/Main");
+  const validateNumberInput = (input) => {
+    return /^\d+$/.test(input);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
   };
 
   const handleSave = (event) => {
@@ -47,7 +54,7 @@ export const AddOrder = (props) => {
     axios
       .post("http://localhost:8087/api/v1/order/save", orderData)
       .then((response) => {
-        alert("Order saved successfully");
+        setIsSuccessModalOpen(true);
         handleClear(); // Clear the form fields after successful save
       })
       .catch((error) => {
@@ -65,40 +72,42 @@ export const AddOrder = (props) => {
     setTotal("");
   };
 
+  const navigateToMain = () => {
+    navigate("/Main");
+  };
+
   return (
     <Grid
       textAlign="center"
-      style={{ height: "100vh", fontSize: "50px" }}
+      style={{ height: "100vh" }}
       verticalAlign="middle"
     >
-      <Grid.Column style={{ maxWidth: "1520px" }}>
+      <Grid.Column style={{ maxWidth: "600px" }}>
         <Form className="form">
           <Header as="h1" color="teal" textAlign="center">
             ADD NEW ORDER
           </Header>
-          <Table celled>
+          <Table basic="very" textAlign="left">
             <Table.Body>
               <Table.Row>
-                <Table.Cell width={2}>
+                <Table.Cell>
                   <Label>Date</Label>
                 </Table.Cell>
-                <Table.Cell width={6}>
+                <Table.Cell>
                   <Input
                     fluid
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
-                <Table.Cell width={2}>
+                <Table.Cell>
                   <Label>Customers</Label>
                 </Table.Cell>
-                <Table.Cell width={6}>
+                <Table.Cell>
                   <Input
                     fluid
                     value={customers}
                     onChange={(e) => setCustomers(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -111,7 +120,6 @@ export const AddOrder = (props) => {
                     fluid
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -122,7 +130,6 @@ export const AddOrder = (props) => {
                     fluid
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -135,7 +142,6 @@ export const AddOrder = (props) => {
                     fluid
                     value={itemName}
                     onChange={(e) => setItemName(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -146,7 +152,6 @@ export const AddOrder = (props) => {
                     fluid
                     value={items}
                     onChange={(e) => setItems(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -159,7 +164,6 @@ export const AddOrder = (props) => {
                     fluid
                     value={orders}
                     onChange={(e) => setOrders(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -170,26 +174,37 @@ export const AddOrder = (props) => {
                     fluid
                     value={total}
                     onChange={(e) => setTotal(e.target.value)}
-                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
           <Button.Group>
-            <Button onClick={handleSave} color="teal">
+            <Button color="teal" type="submit" onClick={handleSave}>
               Save
             </Button>
             <Button.Or />
-            <Button onClick={handleClear} color="red">
+            <Button color="red" onClick={handleClear}>
               Clear
             </Button>
             <Button.Or />
-            <Button onClick={navigateToMain} color="teal">
+            <Button color="yellow" onClick={navigateToMain}>
               Back
             </Button>
           </Button.Group>
         </Form>
+
+        <Modal open={isSuccessModalOpen} onClose={handleCloseSuccessModal}>
+          <Modal.Header>Order saved successfully</Modal.Header>
+          <Modal.Content>
+            <p>Your order has been saved successfully.</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color="teal" onClick={handleCloseSuccessModal}>
+              Close
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </Grid.Column>
     </Grid>
   );

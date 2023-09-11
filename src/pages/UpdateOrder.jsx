@@ -9,6 +9,7 @@ import {
   Segment,
   Grid,
   Form,
+  Modal,
 } from "semantic-ui-react";
 
 export const UpdateOrder = (props) => {
@@ -21,6 +22,7 @@ export const UpdateOrder = (props) => {
   const [orders, setOrders] = useState("");
   const [quantity, setQuantity] = useState("");
   const [total, setTotal] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const navigateToMain = () => {
     navigate("/Main");
@@ -47,7 +49,7 @@ export const UpdateOrder = (props) => {
     axios
       .post("http://localhost:8087/api/v1/order/save", orderData)
       .then((response) => {
-        alert("Order saved successfully");
+        setIsSuccessModalOpen(true); // Open success modal
         handleClear(); // Clear the form fields after a successful save
       })
       .catch((error) => {
@@ -64,6 +66,10 @@ export const UpdateOrder = (props) => {
     setItemName("");
     setTotal("");
     setOrders("");
+  };
+
+  const handleClick = (route) => {
+    navigate(route);
   };
 
   return (
@@ -180,7 +186,7 @@ export const UpdateOrder = (props) => {
                 </Button>
               </Table.Cell>
               <Table.Cell>
-                <Button color="blue" onClick={navigateToMain}>
+                <Button color="blue" onClick={() => handleClick("/Main")}>
                   Back
                 </Button>
               </Table.Cell>
@@ -188,6 +194,18 @@ export const UpdateOrder = (props) => {
           </Form>
         </Grid.Column>
       </Grid>
+      
+      <Modal open={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)}>
+        <Modal.Header>Order Update Successful</Modal.Header>
+        <Modal.Content>
+          <p>The order has been updated successfully.</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="teal" onClick={() => setIsSuccessModalOpen(false)}>
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   );
 };

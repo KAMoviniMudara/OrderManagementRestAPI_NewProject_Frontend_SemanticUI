@@ -6,10 +6,10 @@ import {
   Form,
   Input,
   Header,
-  Segment,
   Table,
   Label,
   Grid,
+  Modal,
 } from "semantic-ui-react";
 
 export const AddCustomer = (props) => {
@@ -20,6 +20,8 @@ export const AddCustomer = (props) => {
   const [salary, setSalary] = useState("");
   const [contact_numbers, setContactNumbers] = useState([]);
   const [nic, setNic] = useState("");
+
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const handleNicChange = (event) => {
     const inputNic = event.target.value;
@@ -79,7 +81,7 @@ export const AddCustomer = (props) => {
           nic: nic,
           activeState: true,
         });
-        alert("Customer Registration Successful");
+        setIsSuccessModalOpen(true);
         setCustomerName("");
         setCustomerAddress("");
         setSalary("");
@@ -93,6 +95,10 @@ export const AddCustomer = (props) => {
     }
   }
 
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+  };
+
   const handleClick = (route) => {
     navigate(route);
   };
@@ -100,10 +106,10 @@ export const AddCustomer = (props) => {
   return (
     <Grid
       textAlign="center"
-      style={{ height: "100vh", fontSize: "50px" }} 
+      style={{ height: "100vh", fontSize: "50px" }}
       verticalAlign="middle"
     >
-      <Grid.Column style={{ maxWidth: "1520px" }}> 
+      <Grid.Column style={{ maxWidth: "1520px" }}>
         <Form className="form" onSubmit={handleSubmit}>
           <Header as="h1" color="teal" textAlign="center">
             ADD NEW CUSTOMER
@@ -119,7 +125,7 @@ export const AddCustomer = (props) => {
                     fluid
                     value={customer_name}
                     onChange={(event) => setCustomerName(event.target.value)}
-                    style={{ fontSize: "20px" }} 
+                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
                 <Table.Cell width={2}>
@@ -132,7 +138,7 @@ export const AddCustomer = (props) => {
                     onChange={(event) =>
                       setCustomerAddress(event.target.value)
                     }
-                    style={{ fontSize: "20px" }} 
+                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -156,7 +162,7 @@ export const AddCustomer = (props) => {
                     fluid
                     value={salary}
                     onChange={handleSalaryChange}
-                    style={{ fontSize: "20px" }} 
+                    style={{ fontSize: "20px" }}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -173,7 +179,7 @@ export const AddCustomer = (props) => {
                       onChange={(event) =>
                         handlePhoneNumberChange(event, index)
                       }
-                      style={{ fontSize: "20px" }} 
+                      style={{ fontSize: "20px" }}
                     />
                   ))}
                   <Button type="button" onClick={handleAddPhoneNumber}>
@@ -191,14 +197,24 @@ export const AddCustomer = (props) => {
             <Button color="red" onClick={handleClear}>
               Clear
             </Button>
-            
           </Button.Group>
-          <Button color="teal" onClick={() => handleClick("/Main")}>
+          <Button color="yellow" onClick={() => handleClick("/Main")}>
             Back
           </Button>
         </Form>
       </Grid.Column>
+
+      <Modal open={isSuccessModalOpen} onClose={handleCloseSuccessModal}>
+        <Modal.Header>Customer Registration Successful</Modal.Header>
+        <Modal.Content>
+          <p>Your customer has been registered successfully.</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="teal" onClick={handleCloseSuccessModal}>
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </Grid>
   );
 };
-

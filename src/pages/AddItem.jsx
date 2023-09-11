@@ -4,20 +4,21 @@ import { useState } from "react";
 import {
   Button,
   Form,
-  Input,
   Header,
-  Table,
+  Input,
   Label,
-  Grid,
   Select,
+  Table,
+  Modal,
+  Grid,
 } from "semantic-ui-react";
 
 const measuringUnitTypes = [
-  "KILO_GRAM",
-  "LITER",
-  "GRAM",
-  "MILI_GRAM",
-  "NUMBER",
+  { key: "KILO_GRAM", text: "KILO_GRAM", value: "KILO_GRAM" },
+  { key: "LITER", text: "LITER", value: "LITER" },
+  { key: "GRAM", text: "GRAM", value: "GRAM" },
+  { key: "MILI_GRAM", text: "MILI_GRAM", value: "MILI_GRAM" },
+  { key: "NUMBER", text: "NUMBER", value: "NUMBER" },
 ];
 
 export const AddItem = (props) => {
@@ -28,9 +29,14 @@ export const AddItem = (props) => {
   const [supplier_price, setSupplierPrice] = useState("");
   const [seller_price, setSellerPrice] = useState("");
   const [measure_type, setMeasureType] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const validateNumberInput = (input) => {
     return /^\d+$/.test(input);
+  };
+
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
   };
 
   const handleClear = (event) => {
@@ -63,7 +69,7 @@ export const AddItem = (props) => {
         sellerPrice: seller_price,
         activeState: true,
       });
-      alert("Item Added Successfully");
+      setIsSuccessModalOpen(true);
       setItemName("");
       setBalanceQty("");
       setSupplierPrice("");
@@ -81,42 +87,36 @@ export const AddItem = (props) => {
   return (
     <Grid
       textAlign="center"
-      style={{ height: "100vh", fontSize: "50px" }}
+      style={{ height: "100vh" }}
       verticalAlign="middle"
     >
-      <Grid.Column style={{ maxWidth: "1520px" }}>
+      <Grid.Column style={{ maxWidth: "600px" }}>
         <Form className="form" onSubmit={handleSubmit}>
-          <Header as="h1" color="teal" textAlign="center">
+          <Header as="h2" color="teal" textAlign="center">
             ADD NEW ITEM
           </Header>
-          <Table celled>
+          <Table basic="very" textAlign="left">
             <Table.Body>
               <Table.Row>
-                <Table.Cell width={2}>
-                  <Label>Name</Label>
+                <Table.Cell>
+                  <Label> Name </Label>
                 </Table.Cell>
-                <Table.Cell width={6}>
+                <Table.Cell>
                   <Input
                     fluid
                     value={item_name}
                     onChange={(event) => setItemName(event.target.value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
                   />
                 </Table.Cell>
-                <Table.Cell width={2}>
-                  <Label>Measuring Unit</Label>
+                <Table.Cell>
+                  <Label> Measuring Unit </Label>
                 </Table.Cell>
-                <Table.Cell width={6}>
+                <Table.Cell>
                   <Select
                     fluid
-                    options={measuringUnitTypes.map((unit) => ({
-                      key: unit,
-                      text: unit,
-                      value: unit,
-                    }))}
+                    options={measuringUnitTypes}
                     value={measure_type}
                     onChange={(event, { value }) => setMeasureType(value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
                   />
                 </Table.Cell>
               </Table.Row>
@@ -129,7 +129,6 @@ export const AddItem = (props) => {
                     fluid
                     value={balance_qty}
                     onChange={(event) => setBalanceQty(event.target.value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -139,8 +138,9 @@ export const AddItem = (props) => {
                   <Input
                     fluid
                     value={supplier_price}
-                    onChange={(event) => setSupplierPrice(event.target.value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
+                    onChange={(event) =>
+                      setSupplierPrice(event.target.value)
+                    }
                   />
                 </Table.Cell>
               </Table.Row>
@@ -153,26 +153,33 @@ export const AddItem = (props) => {
                     fluid
                     value={seller_price}
                     onChange={(event) => setSellerPrice(event.target.value)}
-                    style={{ fontSize: "20px" }} // Adjust the font size
                   />
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
           <Button.Group>
-            <Button type="submit" color="teal">
+            <Button color="teal" type="submit">
               Save
             </Button>
             <Button.Or />
-            <Button color="red" onClick={handleClear}>
-              Clear
-            </Button>
+            <Button color="red" onClick={handleClear}>Clear</Button>
             <Button.Or />
-            <Button color="teal" onClick={() => handleClick("/Main")}>
-              Back
-            </Button>
+            <Button color="yellow" onClick={() => handleClick("/Main")}>Back</Button>
           </Button.Group>
         </Form>
+
+        <Modal open={isSuccessModalOpen} onClose={handleCloseSuccessModal}>
+          <Modal.Header>Item Added Successful</Modal.Header>
+          <Modal.Content>
+            <p>Your item has been added successfully.</p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color="teal" onClick={handleCloseSuccessModal}>
+              Close
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </Grid.Column>
     </Grid>
   );

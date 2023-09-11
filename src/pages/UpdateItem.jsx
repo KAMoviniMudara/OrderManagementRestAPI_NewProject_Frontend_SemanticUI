@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Header, Table, Input, Button, Segment, Grid, Form, Dropdown } from "semantic-ui-react"; // Add missing imports
+import {
+  Header,
+  Table,
+  Input,
+  Button,
+  Segment,
+  Grid,
+  Form,
+  Dropdown,
+  Modal,
+} from "semantic-ui-react";
 
 const measuringUnitTypes = [
   { key: "KILO_GRAM", text: "KILO_GRAM", value: "KILO_GRAM" },
@@ -19,6 +29,7 @@ export const UpdateItem = (props) => {
   const [supplier_price, setSupplierPrice] = useState("");
   const [seller_price, setSellerPrice] = useState("");
   const [measure_type, setMeasureType] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const validateNumberInput = (input) => {
     return /^\d+$/.test(input);
@@ -76,14 +87,14 @@ export const UpdateItem = (props) => {
         sellerPrice: seller_price,
         activeState: true,
       });
-      alert("Item updated Successfully");
+      setIsSuccessModalOpen(true); // Open success modal
       setItemName("");
       setBalanceQty("");
       setSupplierPrice("");
       setSellerPrice("");
       setMeasureType("");
     } catch (err) {
-      alert("Item updated Failed");
+      alert("Item update Failed");
     }
   };
 
@@ -189,10 +200,25 @@ export const UpdateItem = (props) => {
                 Back
               </Button>
             </Table.Cell>
-            
           </Form>
         </Grid.Column>
       </Grid>
+
+      {/* Success Modal */}
+      <Modal
+        open={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+      >
+        <Modal.Header>Item Update Successful</Modal.Header>
+        <Modal.Content>
+          <p>The item has been updated successfully.</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="teal" onClick={() => setIsSuccessModalOpen(false)}>
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   );
 };

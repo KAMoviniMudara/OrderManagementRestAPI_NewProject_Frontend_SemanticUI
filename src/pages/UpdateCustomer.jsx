@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Header, Table, Input, Button, Segment, Grid, Form } from "semantic-ui-react";
+import {
+  Header,
+  Table,
+  Input,
+  Button,
+  Segment,
+  Grid,
+  Form,
+  Modal,
+} from "semantic-ui-react";
 
 export const UpdateCustomer = (props) => {
   const navigate = useNavigate();
@@ -11,6 +20,7 @@ export const UpdateCustomer = (props) => {
   const [salary, setSalary] = useState("");
   const [contact_numbers, setContactNumbers] = useState([]);
   const [nic, setNic] = useState("");
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const validateNumberInput = (input) => {
     return /^\d+$/.test(input);
@@ -64,7 +74,7 @@ export const UpdateCustomer = (props) => {
         nic: nic,
         activeState: true,
       });
-      alert("Customer Update Successful");
+      setIsSuccessModalOpen(true); // Open success modal
       setCustomerName("");
       setCustomerAddress("");
       setSalary("");
@@ -201,6 +211,18 @@ export const UpdateCustomer = (props) => {
           </Form>
         </Grid.Column>
       </Grid>
+
+      <Modal open={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)}>
+        <Modal.Header>Customer Update Successful</Modal.Header>
+        <Modal.Content>
+          <p>The customer has been updated successfully.</p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="teal" onClick={() => setIsSuccessModalOpen(false)}>
+            Close
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   );
 };
