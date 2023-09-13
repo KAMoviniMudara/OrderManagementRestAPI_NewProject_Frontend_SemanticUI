@@ -109,7 +109,7 @@ export const AddCustomer = (props) => {
       style={{ height: "100vh", fontSize: "50px" }}
       verticalAlign="middle"
     >
-      <Grid.Column style={{ maxWidth: "1520px" }}>
+      <Grid.Column style={{ maxWidth: "1200px" }}>
         <Form className="form" onSubmit={handleSubmit}>
           <Header as="h1" color="teal" textAlign="center">
             ADD NEW CUSTOMER
@@ -197,6 +197,7 @@ export const AddCustomer = (props) => {
             <Button color="red" onClick={handleClear}>
               Clear
             </Button>
+            <Button.Or/>
           </Button.Group>
           <Button color="yellow" onClick={() => handleClick("/Main")}>
             Back

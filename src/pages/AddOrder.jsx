@@ -1,22 +1,14 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import {
-  Button,
-  Form,
-  Header,
-  Input,
-  Label,
-  Table,
-  Grid,
-  Modal,
-} from "semantic-ui-react";
+import { useState, useEffect } from "react";
+import { Button, Form, Header, Input, Label, Table, Grid, Modal, Select } from "semantic-ui-react";
 
 export const AddOrder = (props) => {
   const navigate = useNavigate();
 
+  // State for form fields
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [customers, setCustomers] = useState("");
-  const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
   const [itemName, setItemName] = useState("");
   const [items, setItems] = useState("");
@@ -25,14 +17,10 @@ export const AddOrder = (props) => {
   const [total, setTotal] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  const validateNumberInput = (input) => {
-    return /^\d+$/.test(input);
-  };
+  // State for item names fetched from the backend
+  const [itemNames, setItemNames] = useState([]);
 
-  const handleCloseSuccessModal = () => {
-    setIsSuccessModalOpen(false);
-  };
-
+  // Function to handle form submission
   const handleSave = (event) => {
     event.preventDefault();
 
@@ -55,16 +43,17 @@ export const AddOrder = (props) => {
       .post("http://localhost:8087/api/v1/order/save", orderData)
       .then((response) => {
         setIsSuccessModalOpen(true);
-        handleClear(); // Clear the form fields after successful save
+        handleClear();
       })
       .catch((error) => {
         alert("Failed to save order");
       });
   };
 
+  // Function to clear form fields
   const handleClear = () => {
     setCustomers("");
-    setDate("");
+    setDate(new Date().toISOString().split("T")[0]);
     setAmount("");
     setQuantity("");
     setItems("");
@@ -76,13 +65,24 @@ export const AddOrder = (props) => {
     navigate("/Main");
   };
 
+  // Fetch item names from the backend when the component mounts
+  useEffect(() => {
+    console.log("Fetching item names...");
+    axios
+      .get("http:/localhost:8087/api/v1/item/names")
+      .then((response) => {
+        const itemNamesFromServer = response.data.itemNames;
+        console.log("Fetched item names:", itemNamesFromServer);
+        setItemNames(itemNamesFromServer);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch item names", error);
+      });
+  }, []);
+
   return (
-    <Grid
-      textAlign="center"
-      style={{ height: "100vh" }}
-      verticalAlign="middle"
-    >
-      <Grid.Column style={{ maxWidth: "600px" }}>
+    <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
+      <Grid.Column style={{ maxWidth: "1200px" }}>
         <Form className="form">
           <Header as="h1" color="teal" textAlign="center">
             ADD NEW ORDER
@@ -94,21 +94,13 @@ export const AddOrder = (props) => {
                   <Label>Date</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
+                  <Input fluid value={date} onChange={(e) => setDate(e.target.value)} />
                 </Table.Cell>
                 <Table.Cell>
                   <Label>Customers</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={customers}
-                    onChange={(e) => setCustomers(e.target.value)}
-                  />
+                  <Input fluid value={customers} onChange={(e) => setCustomers(e.target.value)} />
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -116,21 +108,13 @@ export const AddOrder = (props) => {
                   <Label>Amount</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                  />
+                  <Input fluid value={amount} onChange={(e) => setAmount(e.target.value)} />
                 </Table.Cell>
                 <Table.Cell>
                   <Label>Quantity</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                  />
+                  <Input fluid value={quantity} onChange={(e) => setQuantity(e.target.value)} />
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -138,21 +122,22 @@ export const AddOrder = (props) => {
                   <Label>ItemName</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
+                  <Select
                     fluid
+                    options={itemNames.map((name) => ({
+                      key: name,
+                      text: name,
+                      value: name,
+                    }))}
                     value={itemName}
-                    onChange={(e) => setItemName(e.target.value)}
+                    onChange={(event, { value }) => setItemName(value)}
                   />
                 </Table.Cell>
                 <Table.Cell>
                   <Label>Items</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={items}
-                    onChange={(e) => setItems(e.target.value)}
-                  />
+                  <Input fluid value={items} onChange={(e) => setItems(e.target.value)} />
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -160,21 +145,13 @@ export const AddOrder = (props) => {
                   <Label>Orders</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={orders}
-                    onChange={(e) => setOrders(e.target.value)}
-                  />
+                  <Input fluid value={orders} onChange={(e) => setOrders(e.target.value)} />
                 </Table.Cell>
                 <Table.Cell>
                   <Label>Total</Label>
                 </Table.Cell>
                 <Table.Cell>
-                  <Input
-                    fluid
-                    value={total}
-                    onChange={(e) => setTotal(e.target.value)}
-                  />
+                  <Input fluid value={total} onChange={(e) => setTotal(e.target.value)} />
                 </Table.Cell>
               </Table.Row>
             </Table.Body>
@@ -194,13 +171,13 @@ export const AddOrder = (props) => {
           </Button.Group>
         </Form>
 
-        <Modal open={isSuccessModalOpen} onClose={handleCloseSuccessModal}>
+        <Modal open={isSuccessModalOpen} onClose={() => setIsSuccessModalOpen(false)}>
           <Modal.Header>Order saved successfully</Modal.Header>
           <Modal.Content>
             <p>Your order has been saved successfully.</p>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="teal" onClick={handleCloseSuccessModal}>
+            <Button color="teal" onClick={() => setIsSuccessModalOpen(false)}>
               Close
             </Button>
           </Modal.Actions>
