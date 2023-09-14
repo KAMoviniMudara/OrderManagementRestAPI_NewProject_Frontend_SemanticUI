@@ -69,7 +69,7 @@ export const AddOrder = (props) => {
   useEffect(() => {
     console.log("Fetching item names...");
     axios
-      .get("http:/localhost:8087/api/v1/item/names")
+      .get("http://localhost:8087/api/v1/item/names")
       .then((response) => {
         const itemNamesFromServer = response.data.itemNames;
         console.log("Fetched item names:", itemNamesFromServer);

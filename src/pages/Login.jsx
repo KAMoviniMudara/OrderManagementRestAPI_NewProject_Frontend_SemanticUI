@@ -5,8 +5,14 @@ import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
 export const Login = () => {
   const navigate = useNavigate();
 
-  function handleClick() {
+  function handleLoginClick() {
+    // Navigate to the "Main" page
     navigate("/Main");
+  }
+
+  function handleRegisterClick() {
+    // Navigate to the "Register" page
+    navigate("/Register");
   }
 
   return (
@@ -26,7 +32,7 @@ export const Login = () => {
                   placeholder="Username"
                   id="username"
                   name="username"
-                  size="massive" 
+                  size="massive"
                 />
               </Form.Field>
               <Form.Field>
@@ -38,14 +44,15 @@ export const Login = () => {
                   type="password"
                   id="password"
                   name="password"
-                  size="massive" 
+                  size="massive"
                 />
               </Form.Field>
-              <Button 
-                    color="teal" 
-                    fluid size="massive" 
-                    onClick={(e) => handleClick()}>
+              <Button color="teal" fluid size="massive" onClick={handleLoginClick}>
                 Login
+              </Button>
+              <br />
+              <Button color="teal" fluid size="massive" onClick={handleRegisterClick}>
+                Register
               </Button>
             </Segment>
           </Form>

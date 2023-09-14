@@ -11,7 +11,8 @@ import { AddOrder } from './pages/AddOrder';
 import { UpdateOrder } from './pages/UpdateOrder';
 import { ItemDetails } from './pages/ItemDetails';
 import { AddItem } from './pages/AddItem';
-import { UpdateItem } from './pages/UpdateItem'
+import { UpdateItem } from './pages/UpdateItem';
+import { Register } from './pages/Register';
 
 function App() {
   
@@ -23,6 +24,7 @@ function App() {
 
           <Route path="/login" element={<Login/>}/>
           <Route path="/main" element={<Main/>}/>
+          <Route path="/register" element={<Register/>}/>
 
           <Route path="/customerdetails" element={<CustomerDetails/>}/>
           <Route path="/addcustomer" element={<AddCustomer/>}/>
