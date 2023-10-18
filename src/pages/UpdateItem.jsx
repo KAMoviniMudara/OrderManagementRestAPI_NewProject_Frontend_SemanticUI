@@ -49,7 +49,7 @@ export const UpdateItem = (props) => {
     if (window.confirm("Are you sure you want to deactivate this item?")) {
       try {
         const response = await axios.patch(
-          `http://localhost:8087/api/v1/item/deactivate-item-by-name`,
+          `http://localhost:8088/api/v1/item/deactivate-item-by-name`,
           {
             itemName: item_name,
           }

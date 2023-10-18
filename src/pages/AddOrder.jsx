@@ -40,7 +40,7 @@ export const AddOrder = (props) => {
     };
 
     axios
-      .post("http://localhost:8087/api/v1/order/save", orderData)
+      .post("http://localhost:8088/api/v1/order/save", orderData)
       .then((response) => {
         setIsSuccessModalOpen(true);
         handleClear();

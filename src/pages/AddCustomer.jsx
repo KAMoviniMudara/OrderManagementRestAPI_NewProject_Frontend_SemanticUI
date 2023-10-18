@@ -73,7 +73,7 @@ export const AddCustomer = (props) => {
     event.preventDefault();
     if (contact_numbers.every((number) => number.length === 10)) {
       try {
-        await axios.post("http://localhost:8087/api/v1/customer/save", {
+        await axios.post("http://localhost:8088/api/v1/customer/save", {
           customerName: customer_name,
           customerAddress: customer_address,
           salary: salary,

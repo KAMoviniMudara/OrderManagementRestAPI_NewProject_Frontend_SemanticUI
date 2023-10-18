@@ -66,7 +66,7 @@ export const UpdateCustomer = (props) => {
     }
 
     try {
-      await axios.post("http://localhost:8087/api/v1/customer/update-by-name", {
+      await axios.post("http://localhost:8088/api/v1/customer/update-by-name", {
         customerName: customer_name,
         customerAddress: customer_address,
         salary: salary,

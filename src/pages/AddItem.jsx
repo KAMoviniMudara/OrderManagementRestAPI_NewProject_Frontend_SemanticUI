@@ -57,7 +57,7 @@ export const AddItem = (props) => {
     }
 
     try {
-      await axios.post("http://localhost:8087/api/v1/item/save", {
+      await axios.post("http://localhost:8088/api/v1/item/save", {
         itemName: item_name,
         measuringUnitType: measure_type,
         balanceQty: parseInt(balance_qty),

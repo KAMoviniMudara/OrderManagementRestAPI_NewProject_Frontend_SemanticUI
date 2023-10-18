@@ -24,10 +24,7 @@ export const UpdateOrder = (props) => {
   const [total, setTotal] = useState("");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
-  const navigateToMain = () => {
-    navigate("/Main");
-  };
-
+  
   const handleSave = (event) => {
     event.preventDefault();
 
