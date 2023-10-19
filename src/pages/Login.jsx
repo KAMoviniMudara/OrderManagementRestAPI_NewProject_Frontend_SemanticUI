@@ -1,40 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
+import axios from "axios";
 
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleLoginClick() {
-    const loginData = {
-      email: email,
-      password: password,
-    };
+  async function handleLoginClick() {
+    try {
+      const loginData = {
+        email: email,
+        password: password,
+      };
 
-    fetch("http://localhost:8088/api/v1/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          navigate("/Main");
-        } else {
-          setErrorMessage("Email or password is incorrect.");
-        }
-      })
-      .catch((error) => {
-        console.error("Network error:", error);
-      });
+      const response = await axios.post("http://localhost:8088/api/v1/user/login", loginData);
+
+      if (response.data.message === "Email not exists") {
+        alert("Email not exists");
+      } else if (response.data.message === "Login Success") {
+        navigate("/Main");
+      } else {
+        alert("Incorrect Email and Password do not match");
+      }
+    } catch (err) {
+      alert(err);
+    }
   }
 
   function handleRegisterClick() {
-    // Navigate to the "Register" page when clicking the "Register" button
     navigate("/Register");
   }
 
@@ -81,9 +76,6 @@ export const Login = () => {
               <Button color="teal" fluid size="massive" onClick={handleRegisterClick}>
                 Register
               </Button>
-              {errorMessage && (
-                <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
-              )}
             </Segment>
           </Form>
         </Grid.Column>
