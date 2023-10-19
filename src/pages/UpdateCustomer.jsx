@@ -40,7 +40,7 @@ export const UpdateCustomer = (props) => {
     if (window.confirm("Are you sure you want to deactivate this customer?")) {
       try {
         const response = await axios.patch(
-          `http://localhost:8087/api/v1/customer/deactivate-customer-by-name`,
+          `http://localhost:8088/api/v1/customer/deactivate-customer-by-name`,
           {
             customerName: customer_name,
           }
