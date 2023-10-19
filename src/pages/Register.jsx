@@ -5,32 +5,41 @@ import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
 export const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
+    userName: "",
+    email: "",
     password: "",
     retypePassword: "",
-    email: "",
-    city: "",
-    birthdate: "",
-    telephoneNumbers: [],
   });
+  const [passwordMatch, setPasswordMatch] = useState(true);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  function handleRegisterClick() {
-    // Perform registration logic here using formData
-    // After registration, you can navigate to another page (e.g., the login page)
-    navigate("/Login");
-  }
+  const handleRegisterClick = async () => {
+    if (formData.password === formData.retypePassword) {
+      try {
+        const response = await fetch("http://localhost:8088/api/v1/user/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
 
-  function handleInputChange(event, { name, value }) {
+        if (response.ok) {
+          setRegistrationSuccess(true);
+        } else {
+          console.error("Registration failed");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    } else {
+      setPasswordMatch(false);
+    }
+  };
+
+  const handleInputChange = (event, { name, value }) => {
     setFormData({ ...formData, [name]: value });
-  }
-
-  function handleTelephoneInputChange(event, { value }) {
-    // Split the comma-separated string into an array
-    const telephoneNumbers = value.split(",");
-    setFormData({ ...formData, telephoneNumbers });
-  }
+  };
 
   return (
     <div className="register">
@@ -46,31 +55,21 @@ export const Register = () => {
                   fluid
                   icon="user"
                   iconPosition="left"
-                  placeholder="First Name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="user"
-                  iconPosition="left"
                   placeholder="Username"
-                  name="username"
-                  value={formData.username}
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleInputChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Input
+                  fluid
+                  icon="envelope"
+                  iconPosition="left"
+                  placeholder="Email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleInputChange}
                 />
               </Form.Field>
@@ -98,52 +97,14 @@ export const Register = () => {
                   onChange={handleInputChange}
                 />
               </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="envelope"
-                  iconPosition="left"
-                  placeholder="Email"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="map marker"
-                  iconPosition="left"
-                  placeholder="City"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="calendar"
-                  iconPosition="left"
-                  placeholder="Birthdate"
-                  type="date"
-                  name="birthdate"
-                  value={formData.birthdate}
-                  onChange={handleInputChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <Input
-                  fluid
-                  icon="phone"
-                  iconPosition="left"
-                  placeholder="Telephone Numbers (comma-separated)"
-                  name="telephoneNumbers"
-                  value={formData.telephoneNumbers.join(",")}
-                  onChange={handleTelephoneInputChange}
-                />
-              </Form.Field>
+              {!passwordMatch && (
+                <p style={{ color: "red" }}>Passwords do not match.</p>
+              )}
+
+              {registrationSuccess && (
+                <p style={{ color: "green" }}>Registration is successful.</p>
+              )}
+
               <Button color="teal" fluid onClick={handleRegisterClick}>
                 Register
               </Button>

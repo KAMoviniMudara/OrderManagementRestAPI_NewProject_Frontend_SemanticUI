@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Grid, Header, Input, Segment } from "semantic-ui-react";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleLoginClick() {
-    // Navigate to the "Main" page
-    navigate("/Main");
+    const loginData = {
+      email: email,
+      password: password,
+    };
+
+    fetch("http://localhost:8088/api/v1/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          navigate("/Main");
+        } else {
+          setErrorMessage("Email or password is incorrect.");
+        }
+      })
+      .catch((error) => {
+        console.error("Network error:", error);
+      });
   }
 
   function handleRegisterClick() {
-    // Navigate to the "Register" page
+    // Navigate to the "Register" page when clicking the "Register" button
     navigate("/Register");
   }
 
@@ -29,10 +52,12 @@ export const Login = () => {
                   fluid
                   icon="user"
                   iconPosition="left"
-                  placeholder="Username"
-                  id="username"
-                  name="username"
+                  placeholder="Email"
+                  id="email"
+                  name="email"
                   size="massive"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Field>
               <Form.Field>
@@ -45,6 +70,8 @@ export const Login = () => {
                   id="password"
                   name="password"
                   size="massive"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Field>
               <Button color="teal" fluid size="massive" onClick={handleLoginClick}>
@@ -54,6 +81,9 @@ export const Login = () => {
               <Button color="teal" fluid size="massive" onClick={handleRegisterClick}>
                 Register
               </Button>
+              {errorMessage && (
+                <div style={{ color: "red", marginTop: "10px" }}>{errorMessage}</div>
+              )}
             </Segment>
           </Form>
         </Grid.Column>

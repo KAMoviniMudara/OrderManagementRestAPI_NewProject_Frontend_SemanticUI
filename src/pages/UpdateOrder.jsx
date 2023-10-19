@@ -44,7 +44,7 @@ export const UpdateOrder = (props) => {
     };
 
     axios
-      .post("http://localhost:8087/api/v1/order/save", orderData)
+      .post("http://localhost:8088/api/v1/order/save", orderData)
       .then((response) => {
         setIsSuccessModalOpen(true); // Open success modal
         handleClear(); // Clear the form fields after a successful save
