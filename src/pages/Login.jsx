@@ -7,6 +7,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [notAuthorizedMessage, setNotAuthorizedMessage] = useState("");
 
   async function handleLoginClick() {
     try {
@@ -17,15 +18,17 @@ export const Login = () => {
 
       const response = await axios.post("http://localhost:8088/api/v1/user/login", loginData);
 
-      if (response.data.message === "Email not exists") {
-        alert("Email not exists");
-      } else if (response.data.message === "Login Success") {
-        navigate("/Main");
+      if (response.data.message === "Login Success") {
+        if (response.data.role === "ADMIN") {
+          navigate("/Main");
+        } else {
+          setNotAuthorizedMessage("Not Authorized");
+        }
       } else {
-        alert("Incorrect Email and Password do not match");
+        setNotAuthorizedMessage("Not Authorized");
       }
     } catch (err) {
-      alert(err);
+      console.error("An error occurred:", err);
     }
   }
 
@@ -76,6 +79,9 @@ export const Login = () => {
               <Button color="teal" fluid size="massive" onClick={handleRegisterClick}>
                 Register
               </Button>
+              {notAuthorizedMessage && (
+                <p style={{ color: "red" }}>{notAuthorizedMessage}</p>
+              )}
             </Segment>
           </Form>
         </Grid.Column>

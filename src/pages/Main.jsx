@@ -4,18 +4,29 @@ import { Button, Form, Grid, Header, Input, Table } from "semantic-ui-react";
 
 export const Main = () => {
   const navigate = useNavigate();
+  const userRole = "ADMIN"; 
 
   function handleClick(route) {
     navigate(route);
   }
 
+  if (userRole !== "ADMIN") {
+    return (
+      <div className="main" style={{ height: "100vh" }}>
+        <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
+          <Grid.Column style={{ maxWidth: "450px" }}>
+            <Header as="h1" color="red" textAlign="center">
+              You are not authorized to access this page.
+            </Header>
+          </Grid.Column>
+        </Grid>
+      </div>
+    );
+  }
+
   return (
     <div className="main" style={{ height: "100vh" }}>
-      <Grid
-        textAlign="center"
-        style={{ height: "100%" }}
-        verticalAlign="middle"
-      >
+      <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: "450px" }}>
           <Header as="h1" color="teal" textAlign="center">
             CUSTOMER MANAGEMENT SYSTEM
